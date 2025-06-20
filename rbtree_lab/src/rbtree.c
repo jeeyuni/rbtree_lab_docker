@@ -5,6 +5,15 @@
 rbtree *new_rbtree(void) {
   rbtree *p = (rbtree *)calloc(1, sizeof(rbtree));
   // TODO: initialize struct if needed
+
+  // nil 노드 생성 및 초기화
+  node_t *nil_node = (node_t *)calloc(1, sizeof(node_t));
+  nil_node->color = RBTREE_BLACK;
+  
+  // 트리의 nil 및 root 설정
+  p->nil = nil_node;
+  p->root = p->nil;
+
   return p;
 }
 
