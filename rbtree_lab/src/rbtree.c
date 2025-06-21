@@ -4,7 +4,6 @@
 
 rbtree *new_rbtree(void) {
   rbtree *p = (rbtree *)calloc(1, sizeof(rbtree));
-  // TODO: initialize struct if needed
 
   // nil 노드 생성 및 초기화
   node_t *nil_node = (node_t *)calloc(1, sizeof(node_t));
@@ -17,8 +16,38 @@ rbtree *new_rbtree(void) {
   return p;
 }
 
+/*
+1. a node is either red of black
+2. the root and leaves(NIL) are black
+3. if a node is red, then its children are black 
+4. all paths from a node to its NIL descendants contain the same nubmer of black nodes
+
+extra note :
+1. nodes require one storage bit to keep track of color
+2. the longest path (root to farthest nil) is no more than twice the lenght of the shortest path
+shortest path -> all black nodes / longest path -> alternating red and black 
+*/
+void delete_nodes(rbtree *t, node_t *node) {
+  if (node == t-> nil) return;
+
+  delete_nodes(t, node->left);
+  delete_nodes(t, node-> right);
+
+  free(node);
+}
+
+
 void delete_rbtree(rbtree *t) {
   // TODO: reclaim the tree nodes's memory
+  if (t == NULL) return;
+
+  node_t *node = t -> root;
+
+  if (node != t ->nil) {
+    delete_nodes(t, node);
+  }
+
+  free(t->nil);
   free(t);
 }
 
